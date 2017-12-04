@@ -1,4 +1,6 @@
 
 public class SlidingPuzzle {
-	public 
+	public void main(String[] args) {
+		;
+	}
 }
