@@ -8,7 +8,10 @@ public class Tile {
 	private int completedX = 0;
 	private int completedY = 0;
 	
-	
-	
-	
+
+	public Tile(int num) {
+		String number = "" + num;
+		button = new JButton(number);
+	}
+
 }
