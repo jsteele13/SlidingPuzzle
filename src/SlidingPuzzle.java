@@ -83,8 +83,6 @@ public class SlidingPuzzle extends JPanel implements ActionListener{
         
         four.setEnabled(false);
         
-      
-        
     }
     
     public static void main(String[] args) {
