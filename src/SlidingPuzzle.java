@@ -80,6 +80,9 @@ public class SlidingPuzzle extends JPanel implements ActionListener{
         frame.add(four);
         frame.add(five);
         frame.add(six);
+        
+        four.setEnabled(false);
+        
       
         
     }
