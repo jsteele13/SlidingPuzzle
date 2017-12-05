@@ -10,14 +10,18 @@ import java.awt.event.KeyEvent;
 
 
 public class SlidingPuzzle extends JPanel implements ActionListener{
-	private Tile[][] board;
+	private JButton[][] board;
 	
 	private boolean isFinished;
 	
 	public SlidingPuzzle() {
-		board = new Tile[3][3];
+		board = new JButton[3][3];
+		int count = 0;
 		for (int i = 0; i < board.length; i++) {
-			
+			for(int j = 0; j  <board[0].length; j++) {
+				board[i][j] = new JButton("" + count);
+				count++;
+			}
 		}
 		isFinished = false;
 	}
@@ -38,7 +42,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener{
         //Create and set up the window.
         JFrame frame = new JFrame("SlidingPuzzle");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+        frame.setSize(100, 100);
         //Create and set up the content pane.
         SlidingPuzzle newContentPane = new SlidingPuzzle();
         newContentPane.setOpaque(true); //content panes must be opaque
@@ -47,6 +51,23 @@ public class SlidingPuzzle extends JPanel implements ActionListener{
         //Display the window.
         frame.pack();
         frame.setVisible(true);
+        
+        
+        JButton one = new JButton ("1");
+        JButton two = new JButton ("2");
+        JButton three = new JButton ("3");
+        JButton four = new JButton ("4");
+        JButton five = new JButton ("5");
+        JButton six = new JButton ("6");
+        
+        frame.add(one);
+        frame.add(two);
+        frame.add(three);
+        frame.add(four);
+        frame.add(five);
+        frame.add(six);
+      
+        
     }
     
     public static void main(String[] args) {
