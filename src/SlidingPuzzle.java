@@ -11,16 +11,18 @@ import java.awt.event.KeyEvent;
 
 public class SlidingPuzzle extends JPanel implements ActionListener{
 	private JButton[][] board;
+	private int size = 3;
 	
 	private boolean isFinished;
 	
 	public SlidingPuzzle() {
-		board = new JButton[3][3];
+		board = new JButton[size][size];
 		int count = 0;
 		for (int i = 0; i < board.length; i++) {
 			for(int j = 0; j  <board[0].length; j++) {
 				board[i][j] = new JButton("" + count);
 				count++;
+				
 			}
 		}
 		isFinished = false;
@@ -32,6 +34,18 @@ public class SlidingPuzzle extends JPanel implements ActionListener{
 		
 	}
 	
+	public boolean checkFinished() {
+		int count = 1;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (!board[i][j].getText().equals("" + count)) {
+					return false;
+				}
+				count++;
+			}
+		}
+		return true;
+	}
     /**
      * Create the GUI and show it.  For thread safety, 
      * this method should be invoked from the 
