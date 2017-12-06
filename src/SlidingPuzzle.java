@@ -17,7 +17,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener{
 	
 	public SlidingPuzzle() {
 		board = new JButton[size][size];
-		int count = 0;
+		int count = 1;
 		for (int i = 0; i < board.length; i++) {
 			for(int j = 0; j  <board[0].length; j++) {
 				board[i][j] = new JButton("" + count);
