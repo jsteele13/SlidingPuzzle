@@ -1,4 +1,5 @@
  import javax.swing.AbstractButton;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -103,22 +104,16 @@ public class SlidingPuzzle extends JPanel implements ActionListener{
         frame.pack();
         frame.setVisible(true);
         
+//        //TEST
+//        JPanel panel = new JPanel();
+//        GroupLayout layout = new GroupLayout(panel);
+//        
+//        layout.setHorizontalGroup(
+//        		layout.createSequentialGroup(
+//        				.addComponent().board[0][0])
+//        				.addcomponent(board[0][1])
+//        						)));
         
-        JButton one = new JButton ("1");
-        JButton two = new JButton ("2");
-        JButton three = new JButton ("3");
-        JButton four = new JButton ("4");
-        JButton five = new JButton ("5");
-        JButton six = new JButton ("6");
-        
-        frame.add(one);
-        frame.add(two);
-        frame.add(three);
-        frame.add(four);
-        frame.add(five);
-        frame.add(six);
-        
-        four.setEnabled(false);
         
     }
     
