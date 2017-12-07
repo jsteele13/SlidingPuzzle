@@ -13,7 +13,8 @@ import java.awt.event.KeyEvent;
 public class SlidingPuzzle extends JPanel implements ActionListener{
 	private JButton[][] board;
 	private int size = 3;
-	
+	private int emptyRow; //row coordinate of empty tile
+	private int emptyCol; //col coordinate of empty tile
 	private boolean isFinished;
 	
 	public SlidingPuzzle() {
