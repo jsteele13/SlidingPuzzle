@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 
 public class SlidingPuzzle extends JPanel implements ActionListener {
 	private JButton[][] board;
@@ -19,14 +20,31 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	private boolean isFinished;
 
 	public SlidingPuzzle() {
-		board = new JButton[size][size];
-		int count = 1;
+		board = new JButton[size][size]; 
+		HashMap<Integer, Boolean> buttonsMade = new HashMap<Integer, Boolean>(); //Hashmap of buttons already made
+		
+		//Loop through grid picking random numbers 
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				board[i][j] = new JButton("" + count);
-				board[i][j].setActionCommand("move" + count);
+				//generates random number not already picked
+				Integer random;
+				do { 
+					random = (int)(Math.random() * 9) + 1;
+				} while (buttonsMade.containsKey(random));
+				//makes blank button (non-existepnt button #9)
+				if(random == 9) { 
+					board[i][j] = new JButton("");
+					board[i][j].setEnabled(false);
+					emptyRow = i;
+					emptyCol = j;
+				} 
+				//makes all other buttons (numbered 1-8)
+				else {
+					board[i][j] = new JButton("" + random);
+				}
+				buttonsMade.put(random, true);
+				board[i][j].setActionCommand("move" + random);
 				board[i][j].addActionListener(this);
-				count++;
 			}
 		}
 		isFinished = false;
