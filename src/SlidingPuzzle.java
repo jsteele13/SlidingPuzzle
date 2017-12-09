@@ -11,15 +11,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
-
+//NEXT STEPS:
+// 1) UI update to allow buttons to switch
+// 2) know when it wins!
+// 3) make pretty/larger
+// 4) rework for a picture
 public class SlidingPuzzle extends JPanel implements ActionListener {
 	private JButton[][] board;
 	private int size = 3;
 	private int emptyRow; // row coordinate of empty tile
 	private int emptyCol; // col coordinate of empty tile
 	private boolean isFinished;
+	private Container pane;
 
-	public SlidingPuzzle() {
+	public SlidingPuzzle(Container p) {
 		board = new JButton[size][size]; 
 		HashMap<Integer, Boolean> buttonsMade = new HashMap<Integer, Boolean>(); //Hashmap of buttons already made
 		
@@ -48,49 +53,60 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 			}
 		}
 		isFinished = false;
+		pane = p;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println(e.getActionCommand().substring(4));
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (board[i][j].getText().equals(e.getActionCommand().substring(4))) {
-					if (i == 0) {
-						if (board[i + 1][j].getText().equals("")) {
-							JButton temp = board[i + 1][j];
-							board[i + 1][j] = board[i][j];
-							board[i][j] = temp;
-							return;
-						}
-					}
-					if (i == board.length - 1) {
-						if (board[i - 1][j].getText().equals("")) {
-							JButton temp = board[i - 1][j];
-							board[i - 1][j] = board[i][j];
-							board[i][j] = temp;
-							return;
-						}
-					}
-					if (j == 0) {
-						if (board[i][j + 1].getText().equals("")) {
-							JButton temp = board[i][j + 1];
-							board[i][j + 1] = board[i][j];
-							board[i][j] = temp;
-							return;
-						}
-					}
-					if (j == board[0].length - 1) {
-						if (board[i][j - 1].getText().equals("")) {
-							JButton temp = board[i][j - 1];
-							board[i][j - 1] = board[i][j];
-							board[i][j] = temp;
-							return;
-						}
+					if(Math.abs(i - emptyCol) == 1 ^ Math.abs(j - emptyRow) == 1) {
+						JButton temp = board[i][j];
+						board[i][j] = board[emptyRow][emptyCol];
+						board[emptyRow][emptyCol] = temp;
+						return;	
 					}
 				}
 			}
 		}
+		//arrangeButtons(pane);
 	}
+
+						
+//					if (i == 0) {
+//						if (board[i + 1][j].getText().equals("")) {
+//							JButton temp = board[i + 1][j];
+//							board[i + 1][j] = board[i][j];
+//							board[i][j] = temp;
+//							return;
+//						}
+//					}
+//					if (i == board.length - 1) {
+//						if (board[i - 1][j].getText().equals("")) {
+//							JButton temp = board[i - 1][j];
+//							board[i - 1][j] = board[i][j];
+//							board[i][j] = temp;
+//							return;
+//						}
+//					}
+//					if (j == 0) {
+//						if (board[i][j + 1].getText().equals("")) {
+//							JButton temp = board[i][j + 1];
+//							board[i][j + 1] = board[i][j];
+//							board[i][j] = temp;
+//							return;
+//						}
+//					}
+//					if (j == board[0].length - 1) {
+//						if (board[i][j - 1].getText().equals("")) {
+//							JButton temp = board[i][j - 1];
+//							board[i][j - 1] = board[i][j];
+//							board[i][j] = temp;
+//							return;
+//						}
+//					}
 
 	public boolean checkFinished() {
 		int count = 1;
@@ -106,7 +122,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	}
 
 	public void arrangeButtons(Container pane) {
-
+		pane.removeAll();
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(size, size));
 		for (int i = 0; i < board.length; i++) {
@@ -115,6 +131,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 			}
 		}
 		pane.add(buttons);
+		//updateUI();
 	}
 
 	/**
@@ -128,7 +145,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(100, 100);
 		// Create and set up the content pane.
-		SlidingPuzzle puzzle = new SlidingPuzzle();
+		SlidingPuzzle puzzle = new SlidingPuzzle(frame.getContentPane());
 		puzzle.setOpaque(true); // content panes must be opaque
 		frame.setContentPane(puzzle);
 		puzzle.arrangeButtons(frame.getContentPane());
@@ -138,6 +155,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 		frame.setVisible(true);
 
 	}
+	
 
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
