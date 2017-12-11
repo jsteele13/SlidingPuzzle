@@ -55,8 +55,8 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
 					board[i][j].setBackground(Color.decode("#003366"));
 					board[i][j].setForeground(Color.decode("#f37021"));
+					oneDBoard[i*size + j] = random;
 				}
-				oneDBoard[i*size + j] = random;
 				buttonsMade.put(random, true);
 				board[i][j].setActionCommand("" + random);
 				board[i][j].addActionListener(this);
@@ -67,9 +67,11 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 		if(inversions % 2 == 1) {	
 			if(emptyRow == 0/* && (emptyCol == 0 || emptyCol == 1)*/) { //switch last two if one of first two is empty
 				swap(board[size - 1][size - 2], board[size - 1][size - 1]);
+				board[size - 1][size - 2].setEnabled(true);
 			}
 			else {
 				swap(board[0][0], board[0][1]); //switch first twos
+				board[0][0].setEnabled(true);
 			}
 		}
 	}
