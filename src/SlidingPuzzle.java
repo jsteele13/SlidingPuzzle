@@ -17,9 +17,9 @@ import java.util.HashMap;
 @SuppressWarnings("serial")
 public class SlidingPuzzle extends JPanel implements ActionListener {
 	private JButton[][] board;
-	private int size = 3;
+	private int size = 4;
 	private int emptyRow; // row coordinate of empty tile
-	private int emptyCol; // col coordinate of empty tile
+	private int emptyCol; // column coordinate of empty tile
 	
 	
 	public SlidingPuzzle(Container p) {
@@ -37,7 +37,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 					random = (int)(Math.random() * size*size) + 1;
 				} while (buttonsMade.containsKey(random));
 			
-				//makes blank button (non-existent button #9)
+				//makes blank button (non-existent button numbered last)
 				if(random == size*size) { 
 					board[i][j] = new JButton("");
 					board[i][j].setPreferredSize(new Dimension(100,100));
@@ -45,9 +45,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 					board[i][j].setEnabled(false);
 					emptyRow = i;
 					emptyCol = j;
-				} 
-				//makes all other buttons (numbered 1-size*size)
-				else {
+				} else { 		//makes all other buttons (numbered 1 to size*size-1)
 					board[i][j] = new JButton("" + random);
 					board[i][j].setPreferredSize(new Dimension(100,100));
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
@@ -60,18 +58,27 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 				board[i][j].addActionListener(this);
 			}
 		}
+		
 		//swap two numbers if impossible
 		int inversions = countInversions(oneDBoard);
-		if(inversions % 2 == 1) {
+		System.out.println("Inversions: " + inversions);
+		if((size % 2 == 1 && inversions % 2 == 1) || (size % 2 == 0 && (inversions + size - emptyRow - 1) % 2 == 1)) {
 			if(emptyRow == 0) { //switch last two if one of first two is empty
 				swap(board[size - 1][size - 2], board[size - 1][size - 1]);
 				board[size - 1][size - 2].setEnabled(true);
-			}
-			else {
+				int temp = oneDBoard[size * size - 2];
+				oneDBoard[size * size - 2] = oneDBoard[size * size - 1];
+				oneDBoard[size * size - 1] = temp;
+			} else {
 				swap(board[0][0], board[0][1]); //switch first twos
 				board[0][0].setEnabled(true);
+				int temp = oneDBoard[0];
+				oneDBoard[0] = oneDBoard[1];
+				oneDBoard[1] = temp;
 			}
 		}
+		inversions = countInversions(oneDBoard);
+		System.out.println("Inversions: " + inversions);
 	}
 
 	
