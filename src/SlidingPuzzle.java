@@ -25,20 +25,22 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	
 	
 	public SlidingPuzzle(Container p) {
-		board = new JButton[size][size];
+		board = new JButton[size][size]; 
+		int[] oneDBoard = new int[size*size];
 		HashMap<Integer, Boolean> buttonsMade = new HashMap<Integer, Boolean>(); //Hashmap of buttons already made
-		int count = 1;
+		int random;
 		//Loop through grid picking random numbers 
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
 				
-//				//generates random number not already picked
-				/*do { 
-					count = (int)(Math.random() * size*size) + 1;
-				} while (buttonsMade.containsKey(count));*/
 				
+				//generates random number not already picked
+				do { 
+					random = (int)(Math.random() * size*size) + 1;
+				} while (buttonsMade.containsKey(random));
+			
 				//makes blank button (non-existent button #9)
-				if(count == size*size) { 
+				if(random == size*size) { 
 					board[i][j] = new JButton("");
 					board[i][j].setPreferredSize(new Dimension(100,100));
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
@@ -48,16 +50,26 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 				} 
 				//makes all other buttons (numbered 1-size*size)
 				else {
-					board[i][j] = new JButton("" + count);
+					board[i][j] = new JButton("" + random);
 					board[i][j].setPreferredSize(new Dimension(100,100));
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
 					board[i][j].setBackground(Color.decode("#003366"));
 					board[i][j].setForeground(Color.decode("#f37021"));
 				}
-				buttonsMade.put(count, true);
-				board[i][j].setActionCommand("" + count);
+				oneDBoard[i*size + j] = random;
+				buttonsMade.put(random, true);
+				board[i][j].setActionCommand("" + random);
 				board[i][j].addActionListener(this);
-				count++;
+			}
+		}
+		//swap two numbers if impossible
+		int inversions = countInversions(oneDBoard);
+		if(inversions % 2 == 1) {	
+			if(emptyRow == 0/* && (emptyCol == 0 || emptyCol == 1)*/) { //switch last two if one of first two is empty
+				swap(board[size - 1][size - 2], board[size - 1][size - 1]);
+			}
+			else {
+				swap(board[0][0], board[0][1]); //switch first twos
 			}
 		}
 	}
@@ -67,7 +79,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	public int countInversions(int[] arr) {
 		int inversion = 0;
 		for (int i = 0; i < arr.length - 1; i++) {
-			for (int j = i; j < arr.length; j++) {
+			for (int j = i + 1; j < arr.length; j++) {
 				if (arr[i] > arr[j]) {
 					inversion++;
 				}
