@@ -26,7 +26,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	
 	public SlidingPuzzle(Container p) {
 		board = new JButton[size][size]; 
-		int[] oneDBoard = new int[size*size];
+		int[] oneDBoard = new int[size*size-1];
 		HashMap<Integer, Boolean> buttonsMade = new HashMap<Integer, Boolean>(); //Hashmap of buttons already made
 		int random;
 		//Loop through grid picking random numbers 
@@ -64,16 +64,23 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 		}
 		//swap two numbers if impossible
 		int inversions = countInversions(oneDBoard);
+		System.out.println("Before INVERSIONS:" + inversions);
 		if(inversions % 2 == 1) {	
+			int temp = oneDBoard[0];
+			oneDBoard[0] = oneDBoard[1];
+			oneDBoard[1] = temp;
 			if(emptyRow == 0/* && (emptyCol == 0 || emptyCol == 1)*/) { //switch last two if one of first two is empty
 				swap(board[size - 1][size - 2], board[size - 1][size - 1]);
 				board[size - 1][size - 2].setEnabled(true);
+				
 			}
 			else {
 				swap(board[0][0], board[0][1]); //switch first twos
 				board[0][0].setEnabled(true);
 			}
 		}
+		inversions = countInversions(oneDBoard);
+		System.out.println("After Inversions:" + inversions);
 	}
 
 	
