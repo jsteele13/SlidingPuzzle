@@ -26,22 +26,26 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	private int size = 4;
 	private int emptyRow; // row coordinate of empty tile
 	private int emptyCol; // col coordinate of empty tile
+	private int lastEmptyRow;
+	private int lastEmptyCol;
 	
 	
 	public SlidingPuzzle(Container p) {
 		board = new JButton[size][size]; 
 		HashMap<Integer, Boolean> buttonsMade = new HashMap<Integer, Boolean>(); //Hashmap of buttons already made
-		
+	int count;
 		//Loop through grid picking random numbers 
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
-				//generates random number not already picked
-				Integer random;
+				
+				
+//				//generates random number not already picked
 				do { 
-					random = (int)(Math.random() * size*size) + 1;
-				} while (buttonsMade.containsKey(random));
+					count = (int)(Math.random() * size*size) + 1;
+				} while (buttonsMade.containsKey(count));
+				
 				//makes blank button (non-existent button #9)
-				if(random == size*size) { 
+				if(count == size*size) { 
 					board[i][j] = new JButton("");
 					board[i][j].setPreferredSize(new Dimension(100,100));
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
@@ -51,20 +55,49 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 				} 
 				//makes all other buttons (numbered 1-size*size)
 				else {
-					board[i][j] = new JButton("" + random);
+					board[i][j] = new JButton("" + count);
 					board[i][j].setPreferredSize(new Dimension(100,100));
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
 					board[i][j].setBackground(Color.decode("#003366"));
 					board[i][j].setForeground(Color.decode("#f37021"));
 				}
-				buttonsMade.put(random, true);
-				board[i][j].setActionCommand("move" + random);
+				buttonsMade.put(count, true);
+				board[i][j].setActionCommand("move" + count);
 				board[i][j].addActionListener(this);
+				//count++;
 			}
 		}
 	}
 
 	
+	public void randomize() {
+		for(int i = 0; i < 1000; i++) {
+			int rand = (int)(Math.random() * 4);
+			switch(rand) {
+			case 0: 
+				if(emptyRow + 1 < board.length) {
+					swap(board[emptyRow + 1][emptyCol], board[emptyRow][emptyCol]);
+					emptyRow++;
+				}
+			case 1:
+				if(emptyRow - 1 >= 0) {
+					swap(board[emptyRow - 1][emptyCol], board[emptyRow][emptyCol]);
+					emptyRow--;
+				}
+			case 2: 
+				if(emptyCol + 1 < board[0].length) {
+					swap(board[emptyRow][emptyCol + 1], board[emptyRow][emptyCol]);
+					emptyCol++;
+				}
+			case 3: 
+				if(emptyCol - 1 >= 0) {
+					swap(board[emptyRow][emptyCol - 1], board[emptyRow][emptyCol]);
+					emptyCol--;
+				}
+				
+			}
+		}
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -165,6 +198,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 		puzzle.setOpaque(true); // content panes must be opaque
 		frame.setContentPane(puzzle);
 		puzzle.arrangeButtons(frame.getContentPane());
+		//puzzle.randomize();
 
 		// Display the window.
 		frame.pack();
