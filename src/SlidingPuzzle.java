@@ -64,6 +64,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 		}
 		//swap two numbers if impossible
 		int inversions = countInversions(oneDBoard);
+		
 		if(inversions % 2 == 1) {	
 			if(emptyRow == 0/* && (emptyCol == 0 || emptyCol == 1)*/) { //switch last two if one of first two is empty
 				swap(board[size - 1][size - 2], board[size - 1][size - 1]);
@@ -82,8 +83,12 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 		int inversion = 0;
 		for (int i = 0; i < arr.length - 1; i++) {
 			for (int j = i + 1; j < arr.length; j++) {
-				if (arr[i] > arr[j]) {
-					inversion++;
+				if (arr[i] == arr.length) {
+					break;
+				} else {
+					if (arr[i] > arr[j]) {
+						inversion++;
+					}
 				}
 			}
 		}
