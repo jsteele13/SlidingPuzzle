@@ -7,15 +7,17 @@ import javax.swing.JOptionPane;
 //import javax.swing.ImageIcon;
 
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 //import java.awt.event.KeyEvent;
 import java.util.HashMap;
 //NEXT STEPS:
-// 1) UI update to allow buttons to switch
-// 2) know when it wins!
-// 3) make pretty/larger
+// 1) UI update to allow buttons to switch 	(CHECK - MN)
+// 2) know when it wins! 					(CHECK - MN)
+// 3) make pretty/larger 					(CHECK(?) - MN)
 // 4) rework for a picture
 @SuppressWarnings("serial")
 public class SlidingPuzzle extends JPanel implements ActionListener {
@@ -23,8 +25,8 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	private int size = 3;
 	private int emptyRow; // row coordinate of empty tile
 	private int emptyCol; // col coordinate of empty tile
-	private boolean isFinished;
-	private Container pane;
+	//private boolean isFinished;
+	//private Container pane;
 
 	
 	
@@ -43,6 +45,8 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 				//makes blank button (non-existent button #9)
 				if(random == 9) { 
 					board[i][j] = new JButton("");
+					board[i][j].setPreferredSize(new Dimension(100,100));
+					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
 					board[i][j].setEnabled(false);
 					emptyRow = i;
 					emptyCol = j;
@@ -50,14 +54,16 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 				//makes all other buttons (numbered 1-8)
 				else {
 					board[i][j] = new JButton("" + random);
+					board[i][j].setPreferredSize(new Dimension(100,100));
+					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
 				}
 				buttonsMade.put(random, true);
 				board[i][j].setActionCommand("move" + random);
 				board[i][j].addActionListener(this);
 			}
 		}
-		isFinished = false;
-		pane = p;
+		//isFinished = false;
+		//pane = p;
 	}
 
 	
