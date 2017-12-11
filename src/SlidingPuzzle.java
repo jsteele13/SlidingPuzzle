@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 //import javax.swing.ImageIcon;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,12 +23,9 @@ import java.util.HashMap;
 @SuppressWarnings("serial")
 public class SlidingPuzzle extends JPanel implements ActionListener {
 	private JButton[][] board;
-	private int size = 3;
+	private int size = 4;
 	private int emptyRow; // row coordinate of empty tile
 	private int emptyCol; // col coordinate of empty tile
-	//private boolean isFinished;
-	//private Container pane;
-
 	
 	
 	public SlidingPuzzle(Container p) {
@@ -40,10 +38,10 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 				//generates random number not already picked
 				Integer random;
 				do { 
-					random = (int)(Math.random() * 9) + 1;
+					random = (int)(Math.random() * size*size) + 1;
 				} while (buttonsMade.containsKey(random));
 				//makes blank button (non-existent button #9)
-				if(random == 9) { 
+				if(random == size*size) { 
 					board[i][j] = new JButton("");
 					board[i][j].setPreferredSize(new Dimension(100,100));
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
@@ -51,19 +49,19 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 					emptyRow = i;
 					emptyCol = j;
 				} 
-				//makes all other buttons (numbered 1-8)
+				//makes all other buttons (numbered 1-size*size)
 				else {
 					board[i][j] = new JButton("" + random);
 					board[i][j].setPreferredSize(new Dimension(100,100));
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
+					board[i][j].setBackground(Color.decode("#003366"));
+					board[i][j].setForeground(Color.decode("#f37021"));
 				}
 				buttonsMade.put(random, true);
 				board[i][j].setActionCommand("move" + random);
 				board[i][j].addActionListener(this);
 			}
 		}
-		//isFinished = false;
-		//pane = p;
 	}
 
 	
@@ -90,23 +88,29 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	}
 
 	
-	
-	public void swap(JButton one, JButton two) {
+	public void swap(JButton one, JButton empty) {
 		String oldText = new String(one.getText());
-		String newText = new String(two.getText());
+		String newText = new String(empty.getText());
 		
 		one.setText(newText);
 		one.setActionCommand("move" + newText);
+		one.setBackground(null);
+		one.setForeground(null);
 		
-		two.setText(oldText);
-		two.setActionCommand("move" + oldText);
+		
+		empty.setText(oldText);
+		empty.setActionCommand("move" + oldText);
+		empty.setBackground(Color.decode("#003366"));
+		empty.setForeground(Color.decode("#f37021"));
+		
 		
 		one.setEnabled(false);
-		two.setEnabled(true);
+		empty.setEnabled(true);
 	}
 
 	
-	
+	//Return: true if buttons in right order, false otherwise
+
 	public boolean checkFinished() {
 		int count = 1;
 		for (int i = 0; i < size; i++) {
@@ -115,7 +119,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 					return false;
 				}
 				count++;
-				if (count == 9) {
+				if (count == size*size) {
 					break;
 				}
 			}
@@ -124,14 +128,14 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	}
 
 	
-	// Display a message box
+	// Display message box
     public static void infoBox(String infoMessage, String titleBar)
     {
         JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
     
 	
-	
+	//Arrange the buttons on the board
 	public void arrangeButtons(Container panel) {
 		panel.removeAll();
 		JPanel buttons = new JPanel();
