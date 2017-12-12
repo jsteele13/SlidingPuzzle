@@ -20,6 +20,8 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	private int size = 4;
 	private int emptyRow; // row coordinate of empty tile
 	private int emptyCol; // column coordinate of empty tile
+	private static final String ORANGE = "#f37021";
+	private static final String BLUE = "#003366";
 	
 	
 	public SlidingPuzzle(Container p) {
@@ -49,8 +51,8 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 					board[i][j] = new JButton("" + random);
 					board[i][j].setPreferredSize(new Dimension(100,100));
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
-					board[i][j].setBackground(Color.decode("#003366"));
-					board[i][j].setForeground(Color.decode("#f37021"));
+					board[i][j].setBackground(Color.decode(BLUE));
+					board[i][j].setForeground(Color.decode(ORANGE));
 				}
 				oneDBoard[i*size + j] = random;
 				buttonsMade.put(random, true);
@@ -66,15 +68,19 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 			if(emptyRow == 0) { //switch last two if one of first two is empty
 				swap(board[size - 1][size - 2], board[size - 1][size - 1]);
 				board[size - 1][size - 2].setEnabled(true);
-				int temp = oneDBoard[size * size - 2];
-				oneDBoard[size * size - 2] = oneDBoard[size * size - 1];
-				oneDBoard[size * size - 1] = temp;
+				board[size - 1][size - 2].setBackground(Color.decode(BLUE));
+				board[size - 1][size - 2].setForeground(Color.decode(ORANGE));
+//				int temp = oneDBoard[size * size - 2];
+//				oneDBoard[size * size - 2] = oneDBoard[size * size - 1];
+//				oneDBoard[size * size - 1] = temp;
 			} else {
 				swap(board[0][0], board[0][1]); //switch first twos
 				board[0][0].setEnabled(true);
-				int temp = oneDBoard[0];
-				oneDBoard[0] = oneDBoard[1];
-				oneDBoard[1] = temp;
+				board[0][0].setBackground(Color.decode(BLUE));
+				board[0][0].setForeground(Color.decode(ORANGE));
+//				int temp = oneDBoard[0];
+//				oneDBoard[0] = oneDBoard[1];
+//				oneDBoard[1] = temp;
 			}
 		}
 		inversions = countInversions(oneDBoard);
