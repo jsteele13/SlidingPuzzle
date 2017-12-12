@@ -2,7 +2,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -14,10 +13,14 @@ import java.util.HashMap;
 
 
 
+/**
+ * REFERENCE:
+ * https://www.sitepoint.com/randomizing-sliding-puzzle-tiles/
+ */
 @SuppressWarnings("serial")
 public class SlidingPuzzle extends JPanel implements ActionListener {
 	private JButton[][] board;
-	private int size = 4;
+	private int size = 3;
 	private int emptyRow; // row coordinate of empty tile
 	private int emptyCol; // column coordinate of empty tile
 	private static final String ORANGE = "#f37021";
@@ -27,7 +30,7 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	public SlidingPuzzle(Container p) {
 		board = new JButton[size][size]; 
 		int[] oneDBoard = new int[size*size];
-		HashMap<Integer, Boolean> buttonsMade = new HashMap<Integer, Boolean>(); //Hashmap of buttons already made
+		HashMap<Integer, Boolean> buttonsMade = new HashMap<Integer, Boolean>(); //Hash map of buttons already made
 		int random;
 		//Loop through grid picking random numbers 
 		for (int i = 0; i < board.length; i++) {
@@ -63,32 +66,29 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 		
 		//swap two numbers if impossible
 		int inversions = countInversions(oneDBoard);
-		System.out.println("Inversions: " + inversions);
-		if((size % 2 == 1 && inversions % 2 == 1) || (size % 2 == 0 && (inversions + size - emptyRow - 1) % 2 == 1)) {
+		if((size % 2 == 1 && inversions % 2 == 1) 
+				|| (size % 2 == 0 && (inversions + size - emptyRow - 1) % 2 == 1)) {
 			if(emptyRow == 0) { //switch last two if one of first two is empty
 				swap(board[size - 1][size - 2], board[size - 1][size - 1]);
 				board[size - 1][size - 2].setEnabled(true);
 				board[size - 1][size - 2].setBackground(Color.decode(BLUE));
 				board[size - 1][size - 2].setForeground(Color.decode(ORANGE));
-//				int temp = oneDBoard[size * size - 2];
-//				oneDBoard[size * size - 2] = oneDBoard[size * size - 1];
-//				oneDBoard[size * size - 1] = temp;
 			} else {
 				swap(board[0][0], board[0][1]); //switch first twos
 				board[0][0].setEnabled(true);
 				board[0][0].setBackground(Color.decode(BLUE));
 				board[0][0].setForeground(Color.decode(ORANGE));
-//				int temp = oneDBoard[0];
-//				oneDBoard[0] = oneDBoard[1];
-//				oneDBoard[1] = temp;
 			}
 		}
-		inversions = countInversions(oneDBoard);
-		System.out.println("Inversions: " + inversions);
 	}
 
 	
 	
+	/**
+	 * Return the number of inversions of the puzzle.
+	 * @param arr the board's array
+	 * @return the number of inversions
+	 */
 	public int countInversions(int[] arr) {
 		int inversion = 0;
 		for (int i = 0; i < arr.length - 1; i++) {
@@ -106,10 +106,9 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	}
 	
 	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				if (board[i][j].getText().equals(e.getActionCommand())) {
@@ -129,6 +128,13 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	}
 
 	
+	
+	/**
+	 * Function to swap to buttons, disabling one and enabling the other
+	 * 
+	 * @param one
+	 * @param empty
+	 */
 	public void swap(JButton one, JButton empty) {
 		String oldText = new String(one.getText());
 		String newText = new String(empty.getText());
@@ -150,8 +156,12 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	}
 
 	
-	//Return: true if buttons in right order, false otherwise
-
+	
+	/**
+	 * Return: true if buttons in right order, false otherwise
+	 * 
+	 * @return whether the game has finished
+	 */
 	public boolean checkFinished() {
 		int count = 1;
 		for (int i = 0; i < size; i++) {
@@ -169,14 +179,22 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 	}
 
 	
-	// Display message box
+	/**
+	 * Display message box.
+	 * 
+	 * @param infoMessage The text box
+	 * @param titleBar the title bar
+	 */
     public static void infoBox(String infoMessage, String titleBar)
     {
         JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
     
 	
-	//Arrange the buttons on the board
+	/**Arrange the buttons on the board
+	 * 
+	 * @param panel
+	 */
 	public void arrangeButtons(Container panel) {
 		panel.removeAll();
 		JPanel buttons = new JPanel();
