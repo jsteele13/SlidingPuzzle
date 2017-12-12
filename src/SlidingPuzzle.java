@@ -48,6 +48,8 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 					board[i][j].setPreferredSize(new Dimension(100,100));
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
 					board[i][j].setEnabled(false);
+					board[i][j].setBackground(Color.decode(BLUE));
+					board[i][j].setBorderPainted(false);
 					emptyRow = i;
 					emptyCol = j;
 				} else { 		//makes all other buttons (numbered 1 to size*size-1)
@@ -56,6 +58,8 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 					board[i][j].setFont(new Font("Roboto", Font.PLAIN, 40));
 					board[i][j].setBackground(Color.decode(BLUE));
 					board[i][j].setForeground(Color.decode(ORANGE));
+					board[i][j].setOpaque(true);
+					board[i][j].setBorderPainted(false);
 				}
 				oneDBoard[i*size + j] = random;
 				buttonsMade.put(random, true);
@@ -73,11 +77,13 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 				board[size - 1][size - 2].setEnabled(true);
 				board[size - 1][size - 2].setBackground(Color.decode(BLUE));
 				board[size - 1][size - 2].setForeground(Color.decode(ORANGE));
+				//board[size - 1][size - 2].setOpaque(true);
 			} else {
 				swap(board[0][0], board[0][1]); //switch first twos
 				board[0][0].setEnabled(true);
 				board[0][0].setBackground(Color.decode(BLUE));
 				board[0][0].setForeground(Color.decode(ORANGE));
+				//board[0][0].setOpaque(true);
 			}
 		}
 	}
@@ -147,8 +153,9 @@ public class SlidingPuzzle extends JPanel implements ActionListener {
 		
 		empty.setText(oldText);
 		empty.setActionCommand(oldText);
-		empty.setBackground(Color.decode("#003366"));
-		empty.setForeground(Color.decode("#f37021"));
+		empty.setBackground(Color.decode(BLUE));
+		empty.setForeground(Color.decode(ORANGE));
+		empty.setOpaque(true);
 		
 		
 		one.setEnabled(false);
